@@ -10,12 +10,12 @@ const serverConf = {
 
 getNewBooks()
 
-function upRequestBooks() {
+function upRequestBooks(id) {
     var options = {
         method: 'PUT',
         uri: 'http://47.93.253.17:1221/rs/book',
         body: {
-            id: 1,
+            id,
             status: 2
         },
         json: true // Automatically stringifies the body to JSON
@@ -85,6 +85,7 @@ function put(pathStr, fileStr,id){
             }).then(() =>{
                 console.log(localPath + " --- 上传完成");
                 sftp.end()
+                upRequestBooks(id)
             }).catch((err) => {
                 console.log(err.message, 'catch error');
             });
