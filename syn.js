@@ -35,7 +35,7 @@ function getNewBooks() {
         .then(function (data) {
             data = JSON.parse(data)
             for(let book of data.data) {
-                pathStr = `/home/zhoutk/${book.path}/${book.book_name}`
+                pathStr = `/home/zhoutk/${book.path}`
                 fileStr = `/home/zhoutk/${book.path}/${book.book_name}.${book.ext}`
                 put(pathStr, fileStr, data.id)
             }
