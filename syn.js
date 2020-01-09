@@ -11,11 +11,12 @@ const serverConf = {
 getNewBooks()
 
 function upRequestBooks(id) {
+    console.log(`------- id -------${id}`)
     var options = {
         method: 'PUT',
         uri: 'http://47.93.253.17:1221/rs/book',
         body: {
-            id,
+            id: id,
             status: 2
         },
         json: true // Automatically stringifies the body to JSON
