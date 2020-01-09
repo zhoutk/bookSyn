@@ -35,8 +35,9 @@ function getNewBooks() {
         .then(function (data) {
             data = JSON.parse(data)
             for(let book of data.data) {
-                pathStr = `/home/zhoutk/${book.path}/${book.book_name}.${book.ext}`
-                put(pathStr, pathStr, data.id)
+                pathStr = `/home/zhoutk/${book.path}/${book.book_name}`
+                fileStr = `/home/zhoutk/${book.path}/${book.book_name}.${book.ext}`
+                put(pathStr, fileStr, data.id)
             }
             console.log(data)
         })
@@ -45,12 +46,12 @@ function getNewBooks() {
         });
 }
 
-function put(localPath,romotePath,id){
+function put(pathStr, fileStr,id){
     let sftp = new Client();
 
     sftp.connect(serverConf)
         .then(() => {
-            return sftp.exists(romotePath);
+            return sftp.exists(pathStr);
         })
         .then(data => {
             console.log(`dir exist? - ${data}`);          // will be false or d, -, l (dir, file or link)
@@ -58,17 +59,17 @@ function put(localPath,romotePath,id){
                 let client = new Client();
                 client.connect(serverConf)
                     .then(() => {
-                        return client.mkdir(romotePath, true);
+                        return client.mkdir(pathStr, true);
                     })
                     .then(() => {
-                        uploadFile(localPath, romotePath, id)
+                        uploadFile(fileStr, fileStr, id)
                         return client.end();
                     })
                     .catch(err => {
                         console.error(err.message);
                     });
             } else {
-                uploadFile(localPath, romotePath, id)
+                uploadFile(fileStr, fileStr, id)
             }
         })
         .then(() => {
@@ -82,7 +83,7 @@ function put(localPath,romotePath,id){
             sftp.connect(serverConf).then(() => {
                 return sftp.fastPut(localPath,romotePath);
             }).then(() =>{
-                console.log(localPath + "上传完成");
+                console.log(localPath + " --- 上传完成");
                 sftp.end()
             }).catch((err) => {
                 console.log(err.message, 'catch error');
