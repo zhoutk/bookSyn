@@ -54,13 +54,13 @@ function put(localPath,romotePath,id){
         })
         .then(data => {
             if (data === false) {
-                client.connect(config)
+                sftp.connect(config)
                     .then(() => {
-                        return client.mkdir(romotePath, true);
+                        return sftp.mkdir(romotePath, true);
                     })
                     .then(() => {
                         uploadFile(localPath, romotePath, id)
-                        return client.end();
+                        return sftp.end();
                     })
                     .catch(err => {
                         console.error(err.message);
