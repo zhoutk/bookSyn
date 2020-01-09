@@ -53,15 +53,16 @@ function put(localPath,romotePath,id){
             return sftp.exists(romotePath);
         })
         .then(data => {
-            sftp.end();
+            console.log(`dir exist? - ${data}`);          // will be false or d, -, l (dir, file or link)
             if (data === false) {
-                sftp.connect(serverConf)
+                let client = new Client();
+                client.connect(serverConf)
                     .then(() => {
-                        return sftp.mkdir(romotePath, true);
+                        return client.mkdir(romotePath, true);
                     })
                     .then(() => {
                         uploadFile(localPath, romotePath, id)
-                        return sftp.end();
+                        return client.end();
                     })
                     .catch(err => {
                         console.error(err.message);
@@ -69,7 +70,9 @@ function put(localPath,romotePath,id){
             } else {
                 uploadFile(localPath, romotePath, id)
             }
-            console.log(`dir exist? - ${data}`);          // will be false or d, -, l (dir, file or link)
+        })
+        .then(() => {
+            sftp.end();
         })
         .catch(err => {
             console.error(err.message);
