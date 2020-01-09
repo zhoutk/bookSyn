@@ -8,7 +8,9 @@ const serverConf = {
     password: 'Ilove001'
 }
 
-getNewBooks()
+setInterval(function(){
+    getNewBooks()
+}, 1000 * 60);
 
 function upRequestBooks(id) {
     console.log(`------- id -------${id}`)
