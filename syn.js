@@ -54,7 +54,7 @@ function put(localPath,romotePath,id){
         })
         .then(data => {
             if (data === false) {
-                sftp.connect(config)
+                sftp.connect(serverConf)
                     .then(() => {
                         return sftp.mkdir(romotePath, true);
                     })
