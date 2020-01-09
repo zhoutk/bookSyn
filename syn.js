@@ -1,6 +1,13 @@
 let Client = require('ssh2-sftp-client');
 let rq = require('request-promise')
 
+const serverConf = {
+    host: '47.93.253.17',    
+    port: '22',
+    username: 'root',
+    password: 'Ilove001'
+}
+
 getNewBooks()
 
 function upRequestBooks() {
@@ -40,19 +47,48 @@ function getNewBooks() {
 
 function put(localPath,romotePath,id){
     let sftp = new Client();
-    sftp.connect({
-        host: '47.93.253.17',    
-        port: '22',
-        username: 'root',
-        password: 'Ilove001'
-    }).then(() => {
-        return sftp.fastPut(localPath,romotePath);
-    }).then(() =>{
-        console.log(localPath + "上传完成");
-        sftp.end()
-    }).catch((err) => {
-        console.log(err.message, 'catch error');
-    });
+
+    sftp.connect(serverConf)
+        .then(() => {
+            return sftp.exists(romotePath);
+        })
+        .then(data => {
+            if (data === false) {
+                client.connect(config)
+                    .then(() => {
+                        return client.mkdir(romotePath, true);
+                    })
+                    .then(() => {
+                        uploadFile(localPath, romotePath, id)
+                        return client.end();
+                    })
+                    .catch(err => {
+                        console.error(err.message);
+                    });
+            } else {
+                uploadFile(localPath, romotePath, id)
+            }
+            console.log(`dir exist? - ${data}`);          // will be false or d, -, l (dir, file or link)
+        })
+        .then(() => {
+            sftp.end();
+        })
+        .catch(err => {
+            console.error(err.message);
+        });
+
+        function uploadFile(localPath,romotePath,id) {
+            sftp.connect(serverConf).then(() => {
+                return sftp.fastPut(localPath,romotePath);
+            }).then(() =>{
+                console.log(localPath + "上传完成");
+                sftp.end()
+            }).catch((err) => {
+                console.log(err.message, 'catch error');
+            });
+        }
+
+    
 }
 
 // function put1(localPath, romotePath) {
