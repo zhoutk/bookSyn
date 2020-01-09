@@ -38,7 +38,7 @@ function getNewBooks() {
             for(let book of data.data) {
                 pathStr = `/home/zhoutk/${book.path}`
                 fileStr = `/home/zhoutk/${book.path}/${book.book_name}.${book.ext}`
-                put(pathStr, fileStr, data.id)
+                put(pathStr, fileStr, book.id)
             }
             console.log(data)
         })
