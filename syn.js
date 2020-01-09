@@ -81,6 +81,7 @@ function put(pathStr, fileStr,id){
         });
 
         function uploadFile(localPath,romotePath,id) {
+            let sftp = new Client();
             sftp.connect(serverConf).then(() => {
                 return sftp.fastPut(localPath,romotePath);
             }).then(() =>{
