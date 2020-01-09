@@ -1,0 +1,16 @@
+{
+  "name": "books_syn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "syn.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zhoutk@189.cn",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5",
+    "ssh2-sftp-client": "^4.3.1"
+  }
+}
