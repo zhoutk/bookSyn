@@ -53,6 +53,7 @@ function put(localPath,romotePath,id){
             return sftp.exists(romotePath);
         })
         .then(data => {
+            sftp.end();
             if (data === false) {
                 sftp.connect(serverConf)
                     .then(() => {
@@ -69,9 +70,6 @@ function put(localPath,romotePath,id){
                 uploadFile(localPath, romotePath, id)
             }
             console.log(`dir exist? - ${data}`);          // will be false or d, -, l (dir, file or link)
-        })
-        .then(() => {
-            sftp.end();
         })
         .catch(err => {
             console.error(err.message);
